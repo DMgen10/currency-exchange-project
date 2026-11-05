@@ -21,7 +21,7 @@ public final class Database {
             if (resource == null){
                 throw new IllegalStateException("File currency.db not found in resources");
             }
-            return "jdbc:sqlite" + Path.of(resource.toURI());
+            return "jdbc:sqlite:" + Path.of(resource.toURI());
         } catch (Exception e) {
             throw new IllegalStateException("failed initialization data base", e);
         }
