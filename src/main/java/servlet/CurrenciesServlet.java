@@ -14,7 +14,7 @@ public class CurrenciesServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.setContentType("application/json");
+        resp.setContentType("text/plain");
         resp.setCharacterEncoding("UTF-8");
         try(Connection connection = Database.getConnection();
             Statement statement = connection.createStatement();
