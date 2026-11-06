@@ -16,6 +16,14 @@ public class CurrenciesServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("application/json");
         resp.setCharacterEncoding("UTF-8");
-        resp.getWriter().write("[]");
+        try(Connection connection = Database.getConnection();
+            Statement statement = connection.createStatement();
+            ResultSet resultSet= statement.executeQuery("SELECT Code, FullName FROM Currencies")){
+            while (resultSet.next()){
+                resp.getWriter().println(resultSet.getString("Code") + " - " + resultSet.getString("FullName"));
+            }
+        } catch (SQLException exception){
+            throw new IOException(exception);
+        }
     }
 }
