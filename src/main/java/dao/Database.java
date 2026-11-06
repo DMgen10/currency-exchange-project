@@ -30,6 +30,6 @@ public final class Database {
     public static Connection getConnection() throws SQLException {
         SQLiteConfig config = new SQLiteConfig();
         config.enforceForeignKeys(true);
-        return DriverManager.getConnection(URL, config.toProperties());
+        return DriverManager.getConnection(JDBC_URL, config.toProperties());
     }
 }
