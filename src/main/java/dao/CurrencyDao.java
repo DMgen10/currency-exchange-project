@@ -21,6 +21,19 @@ public class CurrencyDao {
         }
     }
 
+    public Optional<Currency> findByCode(String code){
+        String sql = "SELECT ID, Code, FullName, Sign FROM Currencies WHERE Code = ?";
+        try(Connection connection = Database.getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql)){
+            statement.setString(1, code);
+            try(ResultSet resultSet = statement.executeQuery()){
+                return resultSet.next() ? Optional.of(map(resultSet)) : Optional.empty();
+            }
+        } catch (SQLException exception){
+            throw new DatabaseException("Couldn't find the currency", exception);
+        }
+    }
+
     private Currency map(ResultSet resultSet) throws SQLException {
         return new Currency(
                 resultSet.getInt("ID"),
