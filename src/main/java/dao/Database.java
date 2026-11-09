@@ -1,20 +1,23 @@
 package dao;
 
 import org.sqlite.SQLiteConfig;
+
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 public final class Database {
 
-    private static final String URL = buildUrl();
+    private static final String JDBC_URL;
 
-    private Database(){}
-
-    private static String buildUrl() {
-
+    static{
         try {
             Class.forName("org.sqlite.JDBC");
 
