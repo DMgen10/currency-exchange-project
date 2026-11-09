@@ -25,4 +25,19 @@ public class CurrenciesServlet extends HttpServlet {
             handleException(resp, exception);
         }
     }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        try{
+            String name = req.getParameter("name");
+            String code = req.getParameter("code");
+            String sign = req.getParameter("sign");
+            if (isBlank(name) || isBlank(code) || isBlank(sign)){
+                throw new BadRequestException("The required form field is missing");
+            }
+            writeJson(resp, 201, service.create(code.trim(), name.trim(), sign.trim()));
+        } catch (Exception exception){
+            handleException(resp, exception);
+        }
+    }
 }
