@@ -15,6 +15,7 @@ import java.sql.Statement;
 @WebServlet("/currencies")
 public class CurrenciesServlet extends HttpServlet {
 
+    private final CurrencyService service = new CurrencyService();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
