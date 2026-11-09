@@ -18,17 +18,11 @@ public class CurrenciesServlet extends HttpServlet {
     private final CurrencyService service = new CurrencyService();
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.setContentType("text/plain");
-        resp.setCharacterEncoding("UTF-8");
-        try(Connection connection = Database.getConnection();
-            Statement statement = connection.createStatement();
-            ResultSet resultSet= statement.executeQuery("SELECT Code, FullName FROM Currencies")){
-            while (resultSet.next()){
-                resp.getWriter().println(resultSet.getString("Code") + " - " + resultSet.getString("FullName"));
-            }
-        } catch (SQLException exception){
-            throw new IOException(exception);
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        try {
+            writeJson(resp, 200,service.findAll());
+        } catch (Exception exception){
+            handleException(resp, exception);
         }
     }
 }
