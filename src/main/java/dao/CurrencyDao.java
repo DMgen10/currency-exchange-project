@@ -34,6 +34,27 @@ public class CurrencyDao {
         }
     }
 
+    public Currency save(String code, String fullName, String sign){
+        String sql = "INSERT INTO Currencies (Code, FullName, Sign) VALUES (?,?,?)";
+        try(Connection connection = Database.getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)){
+            statement.setString(1, code);
+            statement.setString(2, fullName);
+            statement.setString(3, sign);
+            statement.executeUpdate();
+            try(ResultSet keys  = statement.getGeneratedKeys()){
+                keys.next();
+                return new Currency(keys.getInt(1),code,fullName,sign);
+            }
+        } catch (SQLException exception){
+            if (exception instanceof SQLiteException sqLiteException &&
+                    sqLiteException.getResultCode() == SQLiteErrorCode.SQLITE_CONSTRAINT_UNIQUE){
+                throw new ConflictException("A currency with this code already exists");
+            }
+            throw new DatabaseException("Couldn't add the currency", exception);
+        }
+    }
+
     private Currency map(ResultSet resultSet) throws SQLException {
         return new Currency(
                 resultSet.getInt("ID"),
