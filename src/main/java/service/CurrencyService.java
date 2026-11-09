@@ -12,6 +12,10 @@ public class CurrencyService {
         return dao.findByCode(code).map(this::toResponse).orElseThrow(() -> new NotFoundException("Currency not found"));
     }
 
+    public CurrencyResponse create(String code, String name, String sign){
+        return toResponse(dao.save(code, name, sign));
+    }
+
     private CurrencyResponse toResponse(Currency currency) {
         return new CurrencyResponse(currency.id(), currency.fullName(), currency.code(), currency.sign());
     }
