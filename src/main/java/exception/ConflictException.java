@@ -2,7 +2,7 @@ package exception;
 
 public class ConflictException extends ApiException{
 
-    public ConflictException(int status, String message) {
+    public ConflictException(String message) {
         super(409, message);
     }
 }
