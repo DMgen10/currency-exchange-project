@@ -39,6 +39,27 @@ public class ExchangeRateDao {
         }
     }
 
+    public int save(int baseId, int targetId, BigDecimal rate){
+        String sql = "INSERT INTO ExchangeRates (BaseCurrencyId, TargetCurrencyId, Rate) VALUES (?,?,?)";
+        try(Connection connection = Database.getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)){
+            statement.setInt(1, baseId);
+            statement.setInt(2, targetId);
+            statement.setBigDecimal(3, rate);
+            statement.executeUpdate();
+            try(ResultSet keys = statement.getGeneratedKeys()) {
+                keys.next();
+                return keys.getInt(1);
+            }
+            } catch (SQLException exception){
+                if (exception instanceof SQLiteException sqlException && sqlException.getResultCode() == SQLiteErrorCode.SQLITE_CONSTRAINT_UNIQUE){
+                    throw new ConflictException("a currency pair with this code already exists");
+                }
+                throw  new DatabaseException("Couldn t found add exchange rates", exception);
+
+        }
+    }
+
     private ExchangeRate map(ResultSet resultSet) throws SQLException {
         Currency base = new Currency(
                 resultSet.getInt("bId"),
