@@ -2,7 +2,14 @@ package dao;
 
 public class ExchangeRateDao {
 
-    private static final String SELECT = "";
+    private static final String SELECT = """
+        SELECT er.ID, er.Rate,
+               b.ID AS bId, b.Code AS bCode, b.FullName AS bName, b.Sign AS bSign,
+               t.ID as tId, t.Code AS tCode, t.FullName AS tName, t.Sign AS tSign
+               FROM ExchangeRates er
+               JOIN Currencies b ON er.BaseCurrencyId  = b.ID
+               JOIN Currencies t ON er.TargtCurrencyId = t.ID
+""";
 
     public List<ExchangeRate> findAll(){
         try(Connection connection = Database.getConnection();
