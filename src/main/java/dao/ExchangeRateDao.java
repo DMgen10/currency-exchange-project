@@ -60,6 +60,18 @@ public class ExchangeRateDao {
         }
     }
 
+    public void updateRate(int id, BigDecimal rate){
+        String sql = "UPDATE ExchangeRates SET rate = ? WHERE ID = ?";
+        try(Connection connection = Database.getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql)){
+            statement.setBigDecimal(1, rate);
+            statement.setInt(2, id);
+            statement.executeUpdate();
+        } catch (SQLException exception){
+            throw new DatabaseException("failed update exchange rate", exception);
+        }
+    }
+
     private ExchangeRate map(ResultSet resultSet) throws SQLException {
         Currency base = new Currency(
                 resultSet.getInt("bId"),
