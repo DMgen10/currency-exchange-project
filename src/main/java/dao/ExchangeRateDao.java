@@ -25,6 +25,20 @@ public class ExchangeRateDao {
         }
     }
 
+    public Optional<ExchangeRate> findByCodes(String baseCode, String targetCode){
+        String sql = SELECT + " WHERE b.code = ? AND t.Code = ?";
+        try(Connection connection = Database.getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql)){
+            statement.setString(1, baseCode);
+            statement.setString(2, targetCode);
+            try(ResultSet resultSet = statement.executeQuery()){
+                return resultSet.next() ? Optional.of(map(resultSet)) : Optional.empty();
+            }
+        } catch (SQLException exception){
+            throw new DatabaseException("couldn t found exchange rates", exception);
+        }
+    }
+
     private ExchangeRate map(ResultSet resultSet) throws SQLException {
         Currency base = new Currency(
                 resultSet.getInt("bId"),
