@@ -29,6 +29,16 @@ public class ExchangeRateService {
         return toResponse(new ExchangeRate(id, baseCurrency,targetCurrency,rate));
     }
 
+    public ExchangeRateResponse updateRate(String pair, String rawRate){
+        String[] codes = splitPair(pair);
+        BigDecimal rate = parseRate(rawRate);
+
+        ExchangeRate existing = rateDao.findByCodes(codes[0], codes[1]).orElseThrow(() -> new NotFoundException("currency pair exist in the database"));
+
+        rateDao.updateRate(existing.id(), rate);
+        return toResponse(new ExchangeRate(existing.id(), existing.baseCurrency(), existing.targetCurrency(), rate));
+    }
+
     private BigDecimal parseRate(String rawRate) {
         try{
             BigDecimal rate = new BigDecimal(rawRate.trim()).setScale(6, RoundingMode.HALF_UP);
