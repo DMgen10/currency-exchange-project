@@ -29,6 +29,19 @@ public class ExchangeRateService {
         return toResponse(new ExchangeRate(id, baseCurrency,targetCurrency,rate));
     }
 
+    private BigDecimal parseRate(String rawRate) {
+        try{
+            BigDecimal rate = new BigDecimal(rawRate.trim()).setScale(6, RoundingMode.HALF_UP);
+            if (rate.signum() <= 0){
+                throw new BadRequestException("Rate should be positive integer");
+            }
+            return rate;
+        } catch (NumberFormatException exception){
+            throw new BadRequestException("Rate should be integer")
+        }
+    }
+
+
     private ExchangeRateResponse toResponse(ExchangeRate exchangeRate) {
         return new ExchangeRateResponse(exchangeRate.id(), toCurrency(exchangeRate.baseCurrency()),
                 toCurrency(exchangeRate.targetCurrency()),exchangeRate.rate().stripTrailingZeros());
