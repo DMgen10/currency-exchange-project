@@ -29,4 +29,13 @@ public class ExchangeRateService {
     private CurrencyResponse toCurrency(Currency currency) {
         return new CurrencyResponse(currency.id(),currency.fullName(),currency.code(),currency.sign());
     }
+
+    private String[] splitPair(String pair) {
+        if (pair == null || pair.length() != 6){
+            throw new BadRequestException("The currency codes of the pair are missing in the address");
+        }
+        String upper = pair.toUpperCase();
+        return new String[]{upper.substring(0,3),upper.substring(0,3)};
+    }
+
 }
