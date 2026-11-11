@@ -19,8 +19,14 @@ public class ExchangeRateService {
         if (base.equals(target)){
             throw new BadRequestException("Base and target currency equals");
         }
-        String upper = pair.toUpperCase();
-        return new String[]{upper.substring(0,3),upper.substring(0,3)};
+        BigDecimal rate = parseRate(rawRate);
+        Currency baseCurrency = currencyDao.findByCode(base).orElse(null);
+        Currency targetCurrency = currencyDao.findByCode(target).orElse(null);
+        if (baseCurrency == null || targetCurrency == null){
+            throw new NotFoundException("One or both currency from a currency pair does not exist in the database");
+        }
+        int id = rateDao.save(baseCurrency.id(), targetCurrency.id(), rate);
+        return toResponse(new ExchangeRate(id, baseCurrency,targetCurrency,rate));
     }
 
     private ExchangeRateResponse toResponse(ExchangeRate exchangeRate) {
