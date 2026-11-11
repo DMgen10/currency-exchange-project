@@ -37,7 +37,7 @@ public class ExchangeRateService {
             }
             return rate;
         } catch (NumberFormatException exception){
-            throw new BadRequestException("Rate should be integer")
+            throw new BadRequestException("Rate should be integer");
         }
     }
 
