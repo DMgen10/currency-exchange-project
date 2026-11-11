@@ -66,7 +66,7 @@ public class ExchangeRateService {
             throw new BadRequestException("The currency codes of the pair are missing in the address");
         }
         String upper = pair.toUpperCase();
-        return new String[]{upper.substring(0,3),upper.substring(0,3)};
+        return new String[]{upper.substring(0,3),upper.substring(3)};
     }
 
 }
