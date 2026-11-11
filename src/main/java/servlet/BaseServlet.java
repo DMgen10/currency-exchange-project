@@ -22,6 +22,17 @@ public abstract class BaseServlet extends HttpServlet {
         }
     }
 
+    protected Map<String, String> parseForm(HttpServletRequest request) throws IOException {
+        String body = new String(request.getInputStream().readAllBytes(), StandardCharsets.UTF_8);
+        Map<String,String> result = new HashMap<>();
+        for (String pair : body.split("&")){
+            if (pair.isBlank()) continue;
+            String[] kv = pair.split("=",2);
+            result.put(URLDecoder.decode(kv[0], StandardCharsets.UTF_8), kv.length > 1 ? URLDecoder.decode(kv[1],StandardCharsets.UTF_8): "");
+        }
+        return result;
+    }
+
     protected boolean isBlank(String field){
         return field == null || field.isBlank();
     }
