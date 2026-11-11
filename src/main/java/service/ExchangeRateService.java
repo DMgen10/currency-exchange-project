@@ -13,9 +13,11 @@ public class ExchangeRateService {
         return rateDao.findByCodes(codes[0], codes[1]).map(this::toResponse).orElseThrow(() -> new  NotFoundException("The exchange rate for the pair was not found"));
     }
 
-    private String[] splitPair(String pair) {
-        if (pair == null || pair.length() != 6){
-            throw new BadRequestException("The currency codes of the pair are missing in the address");
+    public ExchangeRateResponse create(String baseCode, String targetCode, String rawRate){
+        String base = baseCode.trim().toUpperCase();
+        String target = targetCode.trim().toUpperCase();
+        if (base.equals(target)){
+            throw new BadRequestException("Base and target currency equals");
         }
         String upper = pair.toUpperCase();
         return new String[]{upper.substring(0,3),upper.substring(0,3)};
