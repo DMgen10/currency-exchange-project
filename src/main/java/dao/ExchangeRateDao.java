@@ -82,7 +82,7 @@ public class ExchangeRateDao {
                 resultSet.getInt("tId"),
                 resultSet.getString("tCode"),
                 resultSet.getString("tName"),
-                resultSet.getString("bSign"));
+                resultSet.getString("tSign"));
         return new ExchangeRate(resultSet.getInt("ID"), base, target, resultSet.getBigDecimal("Rate"));
     }
 }
