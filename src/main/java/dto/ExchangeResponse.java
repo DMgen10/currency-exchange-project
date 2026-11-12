@@ -1,4 +1,4 @@
 package dto;
 
-public class ExchangeResponse {
+public record ExchangeResponse(CurrencyResponse baseCurrency, CurrencyResponse targetCurrency, int amount) {
 }
