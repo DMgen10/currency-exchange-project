@@ -15,7 +15,7 @@ public class ExchangeRatesServlet extends BaseServlet {
     private final ExchangeRateService service = new ExchangeRateService();
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         try {
             writeJson(resp,200, service.findAll());
         } catch (Exception exception){
