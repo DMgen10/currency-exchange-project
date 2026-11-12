@@ -1,5 +1,17 @@
 package service;
 
+import dao.CurrencyDao;
+import dao.ExchangeRateDao;
+import dto.CurrencyResponse;
+import dto.ExchangeRateResponse;
+import exception.BadRequestException;
+import exception.NotFoundException;
+import model.Currency;
+import model.ExchangeRate;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.List;
+
 public class ExchangeRateService {
     private final ExchangeRateDao rateDao = new ExchangeRateDao();
     private final CurrencyDao currencyDao = new CurrencyDao();
