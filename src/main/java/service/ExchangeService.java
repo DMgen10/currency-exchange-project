@@ -16,9 +16,7 @@ public class ExchangeService {
         }
         Currency baseCurrency = currencyDao.findByCode(base).orElse(null);
         Currency targetCurrency = currencyDao.findByCode(target).orElse(null);
-        if (base.equals(target)){
-            throw new BadRequestException("The source and target currencies should be different");
-        }
+
         if (baseCurrency == null || targetCurrency == null){
             throw new NotFoundException("One or both currency from a currency pair does not exist in the database");
         }
