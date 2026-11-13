@@ -11,6 +11,9 @@ public class ExchangeService {
         String base = fromCode.trim().toUpperCase();
         String target = toCode.trim().toUpperCase();
         BigDecimal amount = parseAmount(rawAmount);
+        if (base.equals(target)){
+            throw new BadRequestException("The source and target currencies should be different");
+        }
         Currency baseCurrency = currencyDao.findByCode(base).orElse(null);
         Currency targetCurrency = currencyDao.findByCode(target).orElse(null);
         if (base.equals(target)){
