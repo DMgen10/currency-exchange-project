@@ -50,4 +50,8 @@ public class ExchangeService {
             throw new BadRequestException("amount should be integer");
         }
     }
+
+    private CurrencyResponse toCurrency(Currency currency) {
+        return new CurrencyResponse(currency.id(),currency.fullName(),currency.code(),currency.sign());
+    }
 }
