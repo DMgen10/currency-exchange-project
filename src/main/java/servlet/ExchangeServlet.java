@@ -22,6 +22,7 @@ public class ExchangeServlet extends BaseServlet{
             if (isBlank(from) || isBlank(to) || isBlank(amount)){
                 throw new BadRequestException("no required parameter is specified: from, to, or amount");
             }
+            writeJson(resp,200,service.exchange(from,to,amount));
         } catch (Exception exception){
             handleException(resp, exception);
         }
