@@ -21,7 +21,8 @@ public class ExchangeService {
             throw new NotFoundException("One or both currency from a currency pair does not exist in the database");
         }
         BigDecimal rate = findRate(baseCurrency, targetCurrency).orElseThrow(() -> new NotFoundException("Exchange rate for pair not found"));
-        return null;
+        BigDecimal convertedAmount = amount.multiply(rate).setScale(2, RoundingMode.HALF_UP);
+        return new ExchangeResponse(toCurrency(baseCurrency), toCurrency(targetCurrency), amount,rate,convertedAmount);
     }
 
     private Optional<BigDecimal> findRate(Currency from, Currency to) {
